@@ -38,6 +38,19 @@ echo "Hostname: ${hostname}"
 echo "Standard Configuration: ${strStandardConfig}"
 echo ""
 echo "softwarePackage - ${strSoftwarePack}"
-echo "addtionalConfig - ${strAddtionalConfig}"
+echo "addtionalConfig - ${strAdditionalConfig}"
+echo ""
+echo "Version Check - "
+echo ""
+
+strServiceNowURL="https://www.swollenhippo.com/ServiceNow/systems/devTickets/completed.php?TicketID=${strTicketID}"
+#echo ${strServiceNowURL}
+arrServiceNowCurl=$(curl ${strServiceNowURL})
+echo ${arrServiceNowCurl}
+
+echo "TicketClosed"
+echo ""
+echo "Completed: $(date +"%d-%b-%Y %H:%M")"
+
 ((intCurrent++))
 done
