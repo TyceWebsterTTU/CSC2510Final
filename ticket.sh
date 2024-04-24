@@ -1,29 +1,17 @@
-
 #!/bin/bash
 # Description: Copies and runs automation script on GCP remote server
 # Author: Tyce Webster
 # Date: 23 April 2024
 
-#strIP=$1
-strTicketID=$1
-echo ${strTicketID}
-#strUsername=$3
+strIP=$1
+strTicketID=$2
+strUsername=$3
 cd
 eval "$(ssh-agent -s)"
 
 # The location of my gcp ssh key is in the .ssh directory
 # My gcp ssh key is called gcpgithubterm
 ssh-add .ssh/gcpgithubterm
-
-strTicketURL="https://www.swollenhippo.com/ServiceNow/systems/devTickets.php"
-#echo ${strTicketURL}
-
-arrResults=$(curl ${strTicketURL} | jq ${strTicketID})
-echo ${arrResults}
-
-intLength=$(echo ${arrResults} | jq 'length')
-#echo ${intLength}
-intCurrent=0
 
 # Using scp, copies a shell script called serverSetup.sh from the
 # current directory to the home directory on the remote server
