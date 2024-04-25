@@ -3,6 +3,8 @@
 strIP=$1
 strTicketID=$2
 
+sudo apt-get install jq
+
 mkdir configurationLogs
 cd configurationLogs/
 
@@ -81,7 +83,8 @@ strSoftwarePackName2=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].name)
 strSoftwarePackInstall=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].install)
 #echo ${strSoftwarePackInstall}
 sudo apt-get install ${strSoftwarePackInstall}
-strCurrVers=$(apt show ${strSoftwarePackInstall} --version)
+strCurrVers=$(apt show ${strSoftwarePackInstall} | grep Version | sed 's/Version: //g')
+#echo ${strCurrVers}
 echo "Version Check - ${strSoftwarePackName2} - ${strCurrVers}" >> ${strTicketID}.log
 
 ((intCurrSP++))

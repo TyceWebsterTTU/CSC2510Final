@@ -15,7 +15,7 @@ ssh-add ~/.ssh/gcpgithubterm
 # Using scp, copies a shell script called serverSetup.sh from the
 # current directory to the home directory on the remote server
 # Note the two lines below is actually one line
-scp -i .ssh/gcpgithubterm serverSetup.sh "${strUsername}"@"${strIP}":/home/"${strUsername}"
+scp -i ~/.ssh/gcpgithubterm serverSetup.sh "${strUsername}"@"${strIP}":/home/"${strUsername}"
 
 ssh ${strUsername}@${strIP} "chmod 755 serverSetup.sh"
 ssh ${strUsername}@${strIP} "./serverSetup.sh ${strIP} ${strTicketID}"
