@@ -18,6 +18,10 @@ intLength=$(echo ${arrResults} | jq 'length')
 
 while [ $intCurrent -lt $intLength ];
 do
+strCurrTicketID=$(echo ${arrResults} | jq -r .[${intCurrent}].ticketID)
+#echo ${strCurrTicketID}
+
+if [ ${strCurrTicketID} == ${strTicketID} ]; then
 hostname=$(hostname)
 strRequestor=$(echo ${arrResults} | jq -r .[${intCurrent}].requestor)
 strSubmissionDate=$(echo ${arrResults} | jq -r .[${intCurrent}].submissionDate)
@@ -94,6 +98,8 @@ echo ${arrServiceNowCurl}
 echo "TicketClosed" >> ${strTicketID}.log
 echo "" >> ${strTicketID}.log
 echo "Completed: $(date +"%d-%b-%Y %H:%M")" >> ${strTicketID}.log
+
+fi
 
 ((intCurrent++))
 done
