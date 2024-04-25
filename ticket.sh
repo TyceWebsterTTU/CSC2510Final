@@ -6,12 +6,11 @@
 strIP=$1
 strTicketID=$2
 strUsername=$3
-cd
 eval "$(ssh-agent -s)"
 
 # The location of my gcp ssh key is in the .ssh directory
 # My gcp ssh key is called gcpgithubterm
-ssh-add .ssh/gcpgithubterm
+ssh-add ~/.ssh/gcpgithubterm
 
 # Using scp, copies a shell script called serverSetup.sh from the
 # current directory to the home directory on the remote server

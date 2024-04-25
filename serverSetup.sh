@@ -30,7 +30,7 @@ strStandardConfig=$(echo ${arrResults} | jq -r .[${intCurrent}].standardConfig)
 #echo ${strSubmissionDate}
 #echo ${strStandardConfig}
 echo "TicketID: ${strTicketID}" >> ${strTicketID}.log
-echo "Start DateTime: ${strSubmissionDate}" >> ${strTicketID}.log
+echo "Start DateTime: ${strSubmissionDate} $(date +"%H:%M")" >> ${strTicketID}.log
 echo "Requestor: ${strRequestor}" >> ${strTicketID}.log
 echo "External IP Address: ${strIP}" >> ${strTicketID}.log
 echo "Hostname: ${hostname}" >> ${strTicketID}.log
@@ -48,7 +48,7 @@ while [ $intCurrSP -lt $intSoftwarePackLN ];
 do
 strSoftwarePackName=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].name)
 #echo ${strSoftwarePackName}
-echo "softwarePackage - ${strSoftwarePackName}" >> ${strTicketID}.log
+echo "softwarePackage - ${strSoftwarePackName} - $(date +"%s")" >> ${strTicketID}.log
 
 ((intCurrSP++))
 done
@@ -65,7 +65,7 @@ while [ $intCurrAC -lt $intAdditionalConfigLN ];
 do
 strAdditionalConfigName=$(echo ${strAdditionalConfig} | jq -r .[${intCurrAC}].name)
 #echo ${strAdditionalConfigName}
-echo "additionalConfig - ${strAdditionalConfigName}" >> ${strTicketID}.log
+echo "additionalConfig - ${strAdditionalConfigName} - $(date +"%s")" >> ${strTicketID}.log
 
 ((intCurrAC++))
 done
@@ -81,7 +81,7 @@ strSoftwarePackName2=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].name)
 strSoftwarePackInstall=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].install)
 #echo ${strSoftwarePackInstall}
 sudo apt-get install ${strSoftwarePackInstall}
-strCurrVers=$(${strSoftwarePackInstall} --version)
+strCurrVers=$(apt show ${strSoftwarePackInstall} --version)
 echo "Version Check - ${strSoftwarePackName2} - ${strCurrVers}" >> ${strTicketID}.log
 
 ((intCurrSP++))
