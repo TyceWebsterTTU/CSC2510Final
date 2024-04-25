@@ -35,27 +35,35 @@ echo ""
 
 strSoftwarePack=$(echo ${arrResults} | jq -r .[${intCurrent}].softwarePackages)
 #echo ${strSoftwarePack}
+intCurrSP=0
 intSoftwarePackLN=$(echo ${strSoftwarePack} | jq 'length')
 #echo ${intSoftwarePackLN}
-while [ $intCurrent -lt $intSoftwarePackLN ];
+
+if [ ${intSoftwarePackLN} -gt 0 ]; then
+while [ $intCurrSP -lt $intSoftwarePackLN ];
 do
-strSoftwarePackName=$(echo ${strSoftwarePack} | jq -r .[${intCurrent}].name)
+strSoftwarePackName=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].name)
 echo "softwarePackage - ${strSoftwarePackName}"
 
-((intCurrent++))
+((intCurrSP++))
 done
+fi
 
 strAdditionalConfig=$(echo ${arrResults} | jq -r .[${intCurrent}].additionalConfigs)
 #echo ${strAdditionalConfig}
+intCurrAC=0
 intAdditionalConfigLN=$(echo ${strAdditionalConfig} | jq 'length')
 #echo ${strAdditionalConfigLN}
-while [ $intCurrent -lt $intAdditionalConfigLN ];
+
+if [ ${intAdditionalConfigLN} -gt 0 ]; then
+while [ $intCurrAC -lt $intAdditionalConfigLN ];
 do
-strAdditionalConfigName=$(echo ${strAdditionalConfig} | jq -r .[${intCurrent}].name)
+strAdditionalConfigName=$(echo ${strAdditionalConfig} | jq -r .[${intCurrAC}].name)
 echo "additionalConfig - ${strAdditionalConfigName}"
 
-((intCurrent++))
+((intCurrAC++))
 done
+fi
 
 echo ""
 echo "Version Check - "
