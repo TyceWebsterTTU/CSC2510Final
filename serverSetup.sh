@@ -25,13 +25,13 @@ strStandardConfig=$(echo ${arrResults} | jq -r .[${intCurrent}].standardConfig)
 #echo ${strRequestor}
 #echo ${strSubmissionDate}
 #echo ${strStandardConfig}
-echo "TicketID: ${strTicketID}"
-echo "Start DateTime: ${strSubmissionDate}"
-echo "Requestor: ${strRequestor}"
-echo "External IP Address: ${strIP}"
-echo "Hostname: ${hostname}"
-echo "Standard Configuration: ${strStandardConfig}"
-echo ""
+echo "TicketID: ${strTicketID}" >> ${strTicketID}.log
+echo "Start DateTime: ${strSubmissionDate}" >> ${strTicketID}.log
+echo "Requestor: ${strRequestor}" >> ${strTicketID}.log
+echo "External IP Address: ${strIP}" >> ${strTicketID}.log
+echo "Hostname: ${hostname}" >> ${strTicketID}.log
+echo "Standard Configuration: ${strStandardConfig}" >> ${strTicketID}.log
+echo "" >> ${strTicketID}.log
 
 strSoftwarePack=$(echo ${arrResults} | jq -r .[${intCurrent}].softwarePackages)
 #echo ${strSoftwarePack}
@@ -43,7 +43,8 @@ if [ ${intSoftwarePackLN} -gt 0 ]; then
 while [ $intCurrSP -lt $intSoftwarePackLN ];
 do
 strSoftwarePackName=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].name)
-echo "softwarePackage - ${strSoftwarePackName}"
+#echo ${strSoftwarePackName}
+echo "softwarePackage - ${strSoftwarePackName}" >> ${strTicketID}.log
 
 ((intCurrSP++))
 done
@@ -59,24 +60,40 @@ if [ ${intAdditionalConfigLN} -gt 0 ]; then
 while [ $intCurrAC -lt $intAdditionalConfigLN ];
 do
 strAdditionalConfigName=$(echo ${strAdditionalConfig} | jq -r .[${intCurrAC}].name)
-echo "additionalConfig - ${strAdditionalConfigName}"
+#echo ${strAdditionalConfigName}
+echo "additionalConfig - ${strAdditionalConfigName}" >> ${strTicketID}.log
 
 ((intCurrAC++))
 done
 fi
 
-echo ""
-echo "Version Check - "
-echo ""
+if [ ${intSoftwarePackLN} -gt 0 ]; then
+echo "" >> ${strTicketID}.log
+intCurrSP=0
+while [ $intCurrSP -lt $intSoftwarePackLN ];
+do
+strSoftwarePackName2=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].name)
+#echo ${strSoftwarePackName2}
+strSoftwarePackInstall=$(echo ${strSoftwarePack} | jq -r .[${intCurrSP}].install)
+#echo ${strSoftwarePackInstall}
+sudo apt-get install ${strSoftwarePackInstall}
+strCurrVers=$(${strSoftwarePackInstall} --version)
+echo "Version Check - ${strSoftwarePackName2} - ${strCurrVers}" >> ${strTicketID}.log
+
+((intCurrSP++))
+done
+fi
+
+echo "" >> ${strTicketID}.log
 
 strServiceNowURL="https://www.swollenhippo.com/ServiceNow/systems/devTickets/completed.php?TicketID=${strTicketID}"
 #echo ${strServiceNowURL}
 arrServiceNowCurl=$(curl ${strServiceNowURL})
 echo ${arrServiceNowCurl}
 
-echo "TicketClosed"
-echo ""
-echo "Completed: $(date +"%d-%b-%Y %H:%M")"
+echo "TicketClosed" >> ${strTicketID}.log
+echo "" >> ${strTicketID}.log
+echo "Completed: $(date +"%d-%b-%Y %H:%M")" >> ${strTicketID}.log
 
 ((intCurrent++))
 done
